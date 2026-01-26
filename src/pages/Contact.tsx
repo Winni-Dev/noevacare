@@ -291,22 +291,16 @@ const ContactPage: React.FC = () => {
     message: '',
   });
 
-  const [submitting, setSubmitting] = useState(false);
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitting(true);
     
     const whatsappMessage = `Nouveau message de contact !%0A%0A` +
       `👤 Nom: ${formData.name}%0A` +
       `📞 Téléphone: ${formData.phone}%0A` +
       `%0A📝 Message:%0A${formData.message}`;
 
-    setTimeout(() => {
-      window.open(`https://wa.me/2250714113978?text=${whatsappMessage}`, '_blank');
-      setSubmitting(false);
-      setFormData({ name: '', phone: '', message: '' });
-    }, 1000);
+    window.open(`https://wa.me/2250714113978?text=${whatsappMessage}`, '_blank');
+    setFormData({ name: '', phone: '', message: '' });
   };
 
   const contactInfo = [
@@ -405,24 +399,10 @@ const ContactPage: React.FC = () => {
               
               <button
                 type="submit"
-                disabled={submitting}
-                className={`w-full py-3 rounded-lg font-medium text-sm flex items-center justify-center ${
-                  submitting
-                    ? 'bg-green-500 text-white'
-                    : 'bg-gray-900 text-white hover:bg-gray-800'
-                }`}
+                className="w-full py-3 rounded-lg font-medium text-sm flex items-center justify-center bg-gray-900 text-white hover:bg-gray-800"
               >
-                {submitting ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                    Envoi en cours...
-                  </>
-                ) : (
-                  <>
-                    <Send size={16} className="mr-2" />
-                    Envoyer via WhatsApp
-                  </>
-                )}
+                <Send size={16} className="mr-2" />
+                Envoyer via WhatsApp
               </button>
             </form>
           </motion.div>
