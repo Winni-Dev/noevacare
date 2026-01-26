@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Favicon -->
+    <link rel="icon" sizes="200" type="image/png" href="/favicon.png" />
+    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
+    
+    <!-- Primary Meta Tags -->
+    <title>Noéva™ - Votre allié bien-être naturel | Hypertension & Équilibre glycémique</title>
+    <meta name="title" content="Noéva™ - Votre allié bien-être naturel | Hypertension & Équilibre glycémique" />
+    <meta name="description" content="Découvrez Noéva™, votre bracelet innovant pour l'hypertension et l'équilibre glycémique. Produits 100% naturels pour votre sérénité au quotidien. Livraison rapide en Côte d'Ivoire et à l'international." />
+    <meta name="keywords" content="bracelet hypertension, équilibre glycémique, bien-être naturel, tension artérielle, glycémie, soins naturels, santé naturelle, Côte d'Ivoire, produits santé, hypertension, diabète, bien-être quotidien" />
+    <meta name="author" content="Noéva™" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="French" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="theme-color" content="#3b82f6" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://noeva.ci/" />
+    <meta property="og:title" content="Noéva™ - Votre allié bien-être naturel" />
+    <meta property="og:description" content="Bracelet innovant pour l'hypertension et l'équilibre glycémique. Produits 100% naturels pour votre sérénité." />
+    <meta property="og:image" content="/og-image.jpg" />
+    <meta property="og:site_name" content="Noéva™" />
+    <meta property="og:locale" content="fr_FR" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://noeva.ci/" />
+    <meta property="twitter:title" content="Noéva™ - Votre allié bien-être naturel" />
+    <meta property="twitter:description" content="Bracelet innovant pour l'hypertension et l'équilibre glycémique. Produits 100% naturels." />
+    <meta property="twitter:image" content="/og-image.jpg" />
+    
+    <!-- Additional SEO -->
+    <meta name="apple-mobile-web-app-title" content="Noéva™" />
+    <meta name="application-name" content="Noéva™" />
+    <meta name="msapplication-TileColor" content="#3b82f6" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://noeva.ci/" />
+    
+    <!-- Preload important resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Preload CSS -->
+    <link rel="preload" href="/src/index.css" as="style">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/src/index.css">
+    
+    <!-- Structured Data / JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HealthAndBeautyBusiness",
+      "name": "Noéva™",
+      "description": "Votre allié bien-être pour l'hypertension et l'équilibre glycémique",
+      "url": "https://noeva.ci/",
+      "logo": "https://noeva.ci/logo.png",
+      "image": "https://noeva.ci/og-image.jpg",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Abidjan",
+        "addressCountry": "CI"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+225-07-14-11-39-78",
+        "contactType": "customer service",
+        "availableLanguage": "French"
+      },
+      "sameAs": [],
+      "openingHours": "Mo-Su 08:00-20:00"
+    }
+    </script>
+  </head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+      height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Performance monitoring -->
+    <script>
+      // Lazy loading for images
+      if ('loading' in HTMLImageElement.prototype) {
+        const images = document.querySelectorAll('img[loading="lazy"]');
+        images.forEach(img => {
+          img.src = img.dataset.src;
+        });
+      }
+      
+      // Performance monitoring
+      window.addEventListener('load', function() {
+        // Report LCP (Largest Contentful Paint)
+        new PerformanceObserver((entryList) => {
+          const entries = entryList.getEntries();
+          const lastEntry = entries[entries.length - 1];
+          console.log('LCP:', lastEntry.startTime);
+        }).observe({type: 'largest-contentful-paint', buffered: true});
+        
+        // Report FID (First Input Delay)
+        new PerformanceObserver((entryList) => {
+          const entries = entryList.getEntries();
+          for (const entry of entries) {
+            const delay = entry.processingStart - entry.startTime;
+            console.log('FID:', delay);
+          }
+        }).observe({type: 'first-input', buffered: true});
+      });
+    </script>
+  </body>
+</html>
