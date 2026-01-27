@@ -276,8 +276,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, ArrowRight, Pause, Play } from 'lucide-react';
-import bracelet from '../IMAGES/bracelet.jpeg';
-import pommade from '../IMAGES/pommade.png';
+import bracelet from '../IMAGES/bracelet.jpg';
+import pommade from '../IMAGES/pommade.webp';
 
 const Hero: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
