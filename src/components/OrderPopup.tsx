@@ -207,8 +207,8 @@ const OrderPopup: React.FC<OrderPopupProps> = ({ isOpen, onClose }) => {
                       <MapPin className="text-blue-500 mt-1 mr-2" size={16} />
                       <span className="text-sm text-blue-700">
                         {formData.location === 'abidjan' && 'Paiement à la livraison disponible'}
-                        {formData.location === 'interior' && 'Acompte de 50% requis avant expédition'}
-                        {formData.location === 'exterior' && 'Acompte + frais d\'expédition requis'}
+                        {formData.location === 'interior' && 'paiement 100% requis avant expédition'}
+                        {formData.location === 'exterior' && 'paiement total + frais d\'expédition requis'}
                       </span>
                     </div>
                   </div>
