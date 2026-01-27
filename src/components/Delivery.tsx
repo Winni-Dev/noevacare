@@ -21,7 +21,7 @@ const Delivery: React.FC = () => {
       icon: <Truck className="text-blue-600" size={24} />,
       description: 'Livraison 2-3 jours',
       price: 'sur devis',
-      payment: 'Acompte 50% requis',
+      payment: 'paiement 100% requis avant expédition',
       color: 'from-blue-50 to-blue-100',
       borderColor: 'border-blue-200'
     },
@@ -31,7 +31,7 @@ const Delivery: React.FC = () => {
       icon: <Globe className="text-purple-600" size={24} />,
       description: 'Livraison 5-7 jours',
       price: 'Sur devis',
-      payment: 'Acompte + frais d\'expédition',
+      payment: 'Paiement total + frais d\'expédition',
       color: 'from-purple-50 to-purple-100',
       borderColor: 'border-purple-200'
     }

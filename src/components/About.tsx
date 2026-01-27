@@ -1666,7 +1666,6 @@ import {
   Flower2,
   ChevronLeft,
   ChevronRight,
-  ThermometerSun,
   Bone,
   HeartPulse
 } from 'lucide-react';
@@ -1846,12 +1845,12 @@ const About: React.FC = () => {
   ];
 
   const creamIngredients = [
-    {
-      name: 'Venin d\'abeille',
-      benefit: 'Effet chauffant naturel',
-      color: 'from-yellow-50 to-yellow-100',
-      icon: <ThermometerSun className="text-yellow-600" size={16} />
-    },
+    // {
+    //   name: 'Venin d\'abeille',
+    //   benefit: 'Effet chauffant naturel',
+    //   color: 'from-yellow-50 to-yellow-100',
+    //   icon: <ThermometerSun className="text-yellow-600" size={16} />
+    // },
     {
       name: 'Arnica',
       benefit: 'Détente après effort',
