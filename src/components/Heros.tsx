@@ -273,9 +273,8 @@
 
 // export default Hero;
 
-
 import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, ArrowRight, Pause, Play } from 'lucide-react';
 import bracelet from '../IMAGES/bracelet.jpeg';
 import pommade from '../IMAGES/pommade.png';
@@ -313,142 +312,211 @@ const Hero: React.FC = () => {
 
   useEffect(() => {
     if (!autoPlay) return;
-    const interval = setInterval(() => nextSlide(), 6000);
+    const interval = setInterval(nextSlide, 6000);
     return () => clearInterval(interval);
   }, [autoPlay, nextSlide]);
 
   return (
-    <section id="hero" className="relative min-h-screen overflow-hidden">
-      <AnimatePresence mode="popLayout">
+    <section id="hero" className="relative min-h-screen overflow-hidden bg-black">
+      {/* Toutes les images montées en permanence dans le DOM */}
+      <div className="absolute inset-0">
         {slides.map((slide, index) => (
-          index === currentSlide && (
-            <motion.div
-              key={slide.id}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ 
+          <motion.div
+            key={slide.id}
+            className="absolute inset-0"
+            initial={false}
+            animate={{
+              opacity: currentSlide === index ? 1 : 0,
+              scale: currentSlide === index ? 1 : 1.1,
+              zIndex: currentSlide === index ? 10 : 0
+            }}
+            transition={{
+              opacity: {
                 duration: 0.8,
-                ease: "easeInOut" 
-              }}
-              className="absolute inset-0"
-            >
-              {/* Image de fond */}
-              <div className="absolute inset-0">
-                <motion.img
-                  src={slide.image}
-                  alt={slide.subtitle}
-                  initial={{ scale: 1.1 }}
-                  animate={{ scale: 1 }}
-                  transition={{ 
-                    duration: 8,
-                    ease: "easeOut"
-                  }}
-                  className="w-full h-full object-cover"
-                />
-                {/* Overlay progressif sans coupure */}
-                <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5 }}
-                  className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/60 to-black/40"
-                />
-              </div>
-
-              {/* Contenu principal */}
-              <div className="relative h-screen flex items-center justify-center px-4 md:px-8">
-                <div className="text-center max-w-3xl w-full">
-                  {/* Titre principal */}
-                  <motion.h1
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2, duration: 0.6 }}
-                    className="text-lg md:text-xl lg:text-2xl text-white/90 mb-4 md:mb-6 font-medium leading-relaxed"
-                  >
-                    {slide.title}
-                  </motion.h1>
-                  
-                  {/* Sous-titre produit */}
-                  <motion.h2
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3, duration: 0.6 }}
-                    className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 md:mb-4"
-                  >
-                    {slide.subtitle}
-                  </motion.h2>
-                  
-                  {/* Description */}
-                  <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4, duration: 0.6 }}
-                    className="text-base md:text-lg text-white/80 mb-6 md:mb-8 max-w-xl mx-auto"
-                  >
-                    {slide.description}
-                  </motion.p>
-                </div>
-              </div>
-
-              {/* Bouton CTA centré en bas */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.6 }}
-                className="absolute bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2"
-              >
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => document.getElementById('produits')?.scrollIntoView({ behavior: 'smooth' })}
-                  className={`px-6 md:px-8 py-2 md:py-3 rounded-full font-medium text-white text-sm md:text-base ${
-                    slide.color === 'primary'
-                      ? 'bg-primary-600 hover:bg-primary-700'
-                      : 'bg-purple-600 hover:bg-purple-700'
-                  }`}
-                >
-                  Découvrir
-                  <ArrowRight className="ml-2 md:ml-3 inline" size={16} />
-                </motion.button>
-              </motion.div>
-            </motion.div>
-          )
+                ease: [0.4, 0, 0.2, 1] // easeInOut cubic-bezier
+              },
+              scale: {
+                duration: 10,
+                ease: "linear"
+              }
+            }}
+            style={{
+              willChange: 'opacity, transform',
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden'
+            }}
+          >
+            {/* Image avec optimisation GPU */}
+            <div className="absolute inset-0">
+              <img
+                src={slide.image}
+                alt={slide.subtitle}
+                className="w-full h-full object-cover"
+                loading="eager"
+                decoding="async"
+              />
+            </div>
+            
+            {/* Overlay fixe (pas d'animation) */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/60 to-black/40" />
+          </motion.div>
         ))}
-      </AnimatePresence>
+      </div>
 
-      {/* Boutons de navigation sur les côtés */}
-      <motion.button
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.8 }}
+      {/* Contenu superposé - tous montés en permanence */}
+      <div className="absolute inset-0">
+        {slides.map((slide, index) => (
+          <motion.div
+            key={`content-${slide.id}`}
+            className="absolute inset-0"
+            initial={false}
+            animate={{
+              opacity: currentSlide === index ? 1 : 0,
+              zIndex: currentSlide === index ? 20 : 0
+            }}
+            transition={{
+              opacity: {
+                duration: 0.6,
+                ease: [0.4, 0, 0.2, 1],
+                delay: currentSlide === index ? 0.1 : 0
+              }
+            }}
+            style={{
+              pointerEvents: currentSlide === index ? 'auto' : 'none',
+              willChange: 'opacity'
+            }}
+          >
+            {/* Contenu principal */}
+            <div className="relative h-screen flex items-center justify-center px-4 md:px-8">
+              <div className="text-center max-w-3xl w-full">
+                {/* Titre principal */}
+                <motion.h1
+                  initial={false}
+                  animate={{
+                    opacity: currentSlide === index ? 1 : 0,
+                    y: currentSlide === index ? 0 : 20
+                  }}
+                  transition={{
+                    duration: 0.6,
+                    ease: [0.4, 0, 0.2, 1],
+                    delay: 0.2
+                  }}
+                  className="text-lg md:text-xl lg:text-2xl text-white/90 mb-4 md:mb-6 font-medium leading-relaxed"
+                >
+                  {slide.title}
+                </motion.h1>
+                
+                {/* Sous-titre produit */}
+                <motion.h2
+                  initial={false}
+                  animate={{
+                    opacity: currentSlide === index ? 1 : 0,
+                    y: currentSlide === index ? 0 : 20
+                  }}
+                  transition={{
+                    duration: 0.6,
+                    ease: [0.4, 0, 0.2, 1],
+                    delay: 0.3
+                  }}
+                  className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 md:mb-4"
+                >
+                  {slide.subtitle}
+                </motion.h2>
+                
+                {/* Description */}
+                <motion.p
+                  initial={false}
+                  animate={{
+                    opacity: currentSlide === index ? 1 : 0,
+                    y: currentSlide === index ? 0 : 20
+                  }}
+                  transition={{
+                    duration: 0.6,
+                    ease: [0.4, 0, 0.2, 1],
+                    delay: 0.4
+                  }}
+                  className="text-base md:text-lg text-white/80 mb-6 md:mb-8 max-w-xl mx-auto"
+                >
+                  {slide.description}
+                </motion.p>
+              </div>
+            </div>
+
+            {/* Bouton CTA */}
+            <motion.div
+              initial={false}
+              animate={{
+                opacity: currentSlide === index ? 1 : 0,
+                y: currentSlide === index ? 0 : 20
+              }}
+              transition={{
+                duration: 0.6,
+                ease: [0.4, 0, 0.2, 1],
+                delay: 0.5
+              }}
+              className="absolute bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2"
+            >
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => document.getElementById('produits')?.scrollIntoView({ behavior: 'smooth' })}
+                className={`px-6 md:px-8 py-2 md:py-3 rounded-full font-medium text-white text-sm md:text-base ${
+                  slide.color === 'primary'
+                    ? 'bg-primary-600 hover:bg-primary-700'
+                    : 'bg-purple-600 hover:bg-purple-700'
+                }`}
+              >
+                Découvrir
+                <ArrowRight className="ml-2 md:ml-3 inline" size={16} />
+              </motion.button>
+            </motion.div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Points indicateurs */}
+      <div className="absolute bottom-24 md:bottom-32 left-1/2 -translate-x-1/2 flex space-x-2 z-30">
+        {slides.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentSlide(index)}
+            className="focus:outline-none p-1"
+            aria-label={`Aller au slide ${index + 1}`}
+          >
+            <motion.div
+              className="w-2 h-2 rounded-full bg-white"
+              animate={{
+                width: currentSlide === index ? 24 : 8,
+                opacity: currentSlide === index ? 1 : 0.5
+              }}
+              transition={{ duration: 0.3 }}
+            />
+          </button>
+        ))}
+      </div>
+
+      {/* Boutons de navigation */}
+      <button
         onClick={prevSlide}
-        className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-black/30 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-black/50 transition-colors"
+        className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-black/60 transition-colors z-30"
         aria-label="Précédent"
       >
         <ChevronLeft size={24} className="text-white" />
-      </motion.button>
+      </button>
       
-      <motion.button
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.8 }}
+      <button
         onClick={nextSlide}
-        className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-black/30 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-black/50 transition-colors"
+        className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-black/60 transition-colors z-30"
         aria-label="Suivant"
       >
         <ChevronRight size={24} className="text-white" />
-      </motion.button>
+      </button>
 
-      {/* Bouton play/pause en bas à droite */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.9 }}
-        className="absolute bottom-6 md:bottom-8 right-4 md:right-8"
-      >
+      {/* Bouton play/pause */}
+      <div className="absolute bottom-6 md:bottom-8 right-4 md:right-8 z-30">
         <button
           onClick={() => setAutoPlay(!autoPlay)}
-          className="w-10 h-10 md:w-12 md:h-12 bg-black/30 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-black/50 transition-colors"
+          className="w-10 h-10 md:w-12 md:h-12 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-black/60 transition-colors"
           aria-label={autoPlay ? "Mettre en pause" : "Lancer la lecture"}
         >
           {autoPlay ? (
@@ -457,21 +525,16 @@ const Hero: React.FC = () => {
             <Play size={20} className="text-white" />
           )}
         </button>
-      </motion.div>
+      </div>
 
-      {/* Indicateur de slide en bas à gauche */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.9 }}
-        className="absolute bottom-6 md:bottom-8 left-4 md:left-8"
-      >
+      {/* Indicateur de slide */}
+      <div className="absolute bottom-6 md:bottom-8 left-4 md:left-8 z-30">
         <div className="text-white text-sm md:text-base">
           <span className="font-bold">0{currentSlide + 1}</span>
           <span className="mx-1 md:mx-2">/</span>
           <span className="text-white/70">0{slides.length}</span>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };
