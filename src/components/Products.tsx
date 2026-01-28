@@ -30,7 +30,9 @@ const Products: React.FC = () => {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
             >
-              <ProductCard product={product} />
+              <ProductCard product={product}>
+                <a href={`/produit/${product.id}`} className="block focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-2xl" style={{display:'block', position:'absolute', top:0, left:0, width:'100%', height:'224px', zIndex:2}} aria-label={product.name}></a>
+              </ProductCard>
             </motion.div>
           ))}
         </div>

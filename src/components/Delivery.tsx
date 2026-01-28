@@ -124,7 +124,7 @@ const Delivery: React.FC = () => {
           <div className="mt-8 p-4 bg-white rounded-xl">
             <p className="text-center text-gray-600">
               <span className="font-semibold">Important :</span> Pour les commandes hors Abidjan, 
-              un acompte est requis avant l'expédition. Nous vous enverrons les détails par WhatsApp.
+              la totalité est requise avant l'expédition. Nous vous enverrons les détails par WhatsApp.
             </p>
           </div>
         </motion.div>

@@ -99,7 +99,7 @@ const ContactSection: React.FC = () => {
                 },
                 {
                   question: 'Puis-je payer à la livraison ?',
-                  answer: 'Oui, uniquement pour les commandes à Abidjan. Pour l\'intérieur et l\'international, un acompte est requis.'
+                  answer: 'Oui, uniquement pour les commandes à Abidjan. Pour l\'intérieur et l\'international, la totalité est requise.'
                 },
                 {
                   question: 'Les produits sont-ils garantis ?',

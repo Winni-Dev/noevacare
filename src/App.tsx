@@ -3,9 +3,12 @@ import { Toaster } from 'react-hot-toast';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import Contact from './pages/Contact';
+import React, { Suspense } from 'react';
+const ProductDetail = React.lazy(() => import('./pages/ProductDetail'));
 
 function App() {
   return (
@@ -43,6 +46,11 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/panier" element={<Cart />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/produit/:id" element={
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Chargement...</div>}>
+                <ProductDetail />
+              </Suspense>
+            } />
           </Routes>
         </main>
         <Footer />
