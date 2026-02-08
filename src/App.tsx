@@ -10,6 +10,16 @@ import Contact from './pages/Contact';
 import React, { Suspense } from 'react';
 const ProductDetail = React.lazy(() => import('./pages/ProductDetail'));
 
+// Suspense fallback component with proper styling to prevent layout shift
+const LoadingFallback = () => (
+  <div className="min-h-screen flex items-center justify-center bg-beige-50">
+    <div className="text-center">
+      <div className="w-8 h-8 border-4 border-gray-200 border-t-primary-600 rounded-full animate-spin mx-auto mb-4" />
+      <p className="text-gray-600">Chargement...</p>
+    </div>
+  </div>
+);
+
 function App() {
   return (
     <Router>
@@ -47,7 +57,7 @@ function App() {
             <Route path="/panier" element={<Cart />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/produit/:id" element={
-              <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Chargement...</div>}>
+              <Suspense fallback={<LoadingFallback />}>
                 <ProductDetail />
               </Suspense>
             } />

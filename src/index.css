@@ -189,7 +189,8 @@ html.lenis {
 .image-card {
   position: relative;
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Replaced transition: all with specific properties for better performance */
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .image-card:hover {
@@ -334,7 +335,7 @@ html.lenis {
 
 /* Smooth transitions pour les interactions */
 .interactive-element {
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .interactive-element:hover {
@@ -459,7 +460,7 @@ html.lenis {
 
 /* Smooth transitions */
 .product-transition {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Hover effect amélioré */
@@ -501,7 +502,7 @@ html.lenis {
 
 /* Transition douce pour les cartes */
 .card-transition {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Effet de flou pour les boutons de navigation */
@@ -714,7 +715,7 @@ html.lenis {
 
 /* Smooth transitions */
 .carousel-transition {
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Image hover effects */
@@ -899,10 +900,8 @@ html {
   }
 }
 
-/* Smooth transitions */
-* {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
+/* Removed global transition: all which causes flickering on every state change */
+/* Transitions are now applied only to specific interactive elements via utility classes */
 
 /* Image optimization */
 .object-cover {

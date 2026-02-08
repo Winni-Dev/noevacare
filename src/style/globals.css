@@ -463,10 +463,8 @@ html {
   }
 }
 
-/* Smooth transitions */
-* {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
+/* Removed global transition: all which causes flickering on every state change */
+/* Transitions are now applied only to specific interactive elements via utility classes */
 
 /* Image optimization */
 .object-cover {
