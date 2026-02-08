@@ -68,8 +68,8 @@ const OrderPopup: React.FC<OrderPopupProps> = ({ isOpen, onClose }) => {
   const getPaymentMethod = (location: string) => {
     switch (location) {
       case 'abidjan': return 'Paiement à la livraison';
-      case 'interior': return 'Acompte obligatoire (50%)';
-      case 'exterior': return 'Acompte + frais d\'expédition';
+      case 'interior': return 'paiement 100% requis avant expédition';
+      case 'exterior': return 'paiement total + frais d\'expédition requis';
       default: return '';
     }
   };
