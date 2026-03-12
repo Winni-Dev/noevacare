@@ -291,21 +291,35 @@ const ProductOrderForm: React.FC<ProductOrderFormProps> = ({ product, quantity, 
     location: 'abidjan',
     country: '',
     city: '',
+    quartier: '',
     notes: '',
   });
+
+  const getEffectivePrice = () => {
+    return product.price;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const total = product.price * quantity;
+    const unitPrice = getEffectivePrice();
+    const total = unitPrice * quantity;
+    
+    let locationLine = `📍 Localisation: ${getLocationText(formData.location)}%0A`;
+    if (formData.location === 'abidjan') {
+      if (formData.city) locationLine += `🏙️ Commune: ${formData.city}%0A`;
+      if (formData.quartier) locationLine += `🏘️ Quartier: ${formData.quartier}%0A`;
+      locationLine += `📦 Livraison gratuite%0A`;
+    } else {
+      if (formData.city) locationLine += `🏙️ Ville: ${formData.city}%0A`;
+      if (formData.country) locationLine += `🌍 Pays: ${formData.country}%0A`;
+    }
     
     // Format WhatsApp message
     const message = `Nouvelle commande de produit !%0A%0A` +
       `👤 Client: ${formData.firstName} ${formData.lastName}%0A` +
       `📞 Téléphone: ${formData.phone}%0A` +
-      `📍 Localisation: ${getLocationText(formData.location)}%0A` +
-      (formData.city ? `🏙️ Ville: ${formData.city}%0A` : '') +
-      (formData.country ? `🌍 Pays: ${formData.country}%0A` : '') +
+      locationLine +
       `%0A🛒 Commande:%0A` +
       `- ${product.name} x${quantity}: ${formatPrice(total)}%0A` +
       `%0A💰 Total: ${formatPrice(total)}%0A` +
@@ -334,6 +348,7 @@ const ProductOrderForm: React.FC<ProductOrderFormProps> = ({ product, quantity, 
       location: 'abidjan',
       country: '',
       city: '',
+      quartier: '',
       notes: '',
     });
   };
@@ -444,10 +459,13 @@ const ProductOrderForm: React.FC<ProductOrderFormProps> = ({ product, quantity, 
                     <div className="flex items-center justify-between mt-2">
                       <div>
                         <p className="text-sm text-gray-600">Quantité: <span className="font-semibold">{quantity}</span></p>
-                        <p className="text-sm text-gray-600">Prix unitaire: <span className="font-semibold">{formatPrice(product.price)}</span></p>
+                        <p className="text-sm text-gray-600">Prix unitaire: <span className="font-semibold">{formatPrice(getEffectivePrice())}</span></p>
+                        {formData.location === 'abidjan' && (
+                          <p className="text-xs text-green-600 font-medium">📦 Livraison gratuite à Abidjan</p>
+                        )}
                       </div>
                       <div className="text-right">
-                        <p className="text-lg font-bold text-primary-600">{formatPrice(product.price * quantity)}</p>
+                        <p className="text-lg font-bold text-primary-600">{formatPrice(getEffectivePrice() * quantity)}</p>
                       </div>
                     </div>
                   </div>
@@ -528,7 +546,7 @@ const ProductOrderForm: React.FC<ProductOrderFormProps> = ({ product, quantity, 
                             name="location"
                             value={option.value}
                             checked={formData.location === option.value}
-                            onChange={(e) => setFormData({ ...formData, location: e.target.value as any })}
+                            onChange={(e) => setFormData({ ...formData, location: e.target.value as any, city: '', country: '', quartier: '' })}
                             className="mt-1 w-4 h-4 text-primary-600"
                           />
                           <div className="ml-4 flex-1">
@@ -560,6 +578,49 @@ const ProductOrderForm: React.FC<ProductOrderFormProps> = ({ product, quantity, 
                     </motion.div>
                   )}
                 </div>
+
+                {/* Commune + Quartier (if abidjan) */}
+                {formData.location === 'abidjan' && (
+                  <>
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="overflow-hidden"
+                    >
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Commune *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.city}
+                        onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                        placeholder="Ex: Cocody, Yopougon, Plateau..."
+                      />
+                    </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="overflow-hidden"
+                    >
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Quartier *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.quartier || ''}
+                        onChange={(e) => setFormData({ ...formData, quartier: e.target.value })}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                        placeholder="Ex: Angré, Riviera, Adjamé..."
+                      />
+                      <p className="text-xs text-gray-500 mt-2">Précisez votre quartier pour une livraison gratuite et rapide</p>
+                    </motion.div>
+                  </>
+                )}
 
                 {/* City (if interior) */}
                 {formData.location === 'interior' && (

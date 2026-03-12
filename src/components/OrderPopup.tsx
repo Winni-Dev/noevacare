@@ -10,7 +10,7 @@ interface OrderPopupProps {
 }
 
 const OrderPopup: React.FC<OrderPopupProps> = ({ isOpen, onClose }) => {
-  const { items, getTotal, clearCart } = useCart();
+  const { items, clearCart } = useCart();
   const [formData, setFormData] = useState<OrderFormData>({
     firstName: '',
     lastName: '',
@@ -18,22 +18,40 @@ const OrderPopup: React.FC<OrderPopupProps> = ({ isOpen, onClose }) => {
     location: 'abidjan',
     country: '',
     city: '',
+    quartier: '',
     notes: '',
   });
 
+  const getEffectivePrice = (item: { id: number; name: string; price: number }) => {
+    return item.price;
+  };
+
+  const getTotalWithLocation = () => {
+    return items.reduce((sum, item) => sum + getEffectivePrice(item) * item.quantity, 0);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const totalDisplay = getTotalWithLocation();
+    let locationLine = `📍 Localisation: ${getLocationText(formData.location)}%0A`;
+    if (formData.location === 'abidjan') {
+      if (formData.city) locationLine += `🏙️ Commune: ${formData.city}%0A`;
+      if (formData.quartier) locationLine += `🏘️ Quartier: ${formData.quartier}%0A`;
+      locationLine += `📦 Livraison gratuite%0A`;
+    } else {
+      if (formData.city) locationLine += `🏙️ Ville: ${formData.city}%0A`;
+      if (formData.country) locationLine += `🌍 Pays: ${formData.country}%0A`;
+    }
     
     // Format WhatsApp message
     const message = `Nouvelle commande !%0A%0A` +
       `👤 Client: ${formData.firstName} ${formData.lastName}%0A` +
       `📞 Téléphone: ${formData.phone}%0A` +
-      `📍 Localisation: ${getLocationText(formData.location)}%0A` +
-      (formData.city ? `🏙️ Ville: ${formData.city}%0A` : '') +
-      (formData.country ? `🌍 Pays: ${formData.country}%0A` : '') +
+      locationLine +
       `%0A🛒 Commande:%0A` +
-      items.map(item => `- ${item.name} x${item.quantity}: ${formatPrice(item.price * item.quantity)}`).join('%0A') +
-      `%0A%0A💰 Total: ${formatPrice(getTotal())}%0A` +
+      items.map(item => `- ${item.name} x${item.quantity}: ${formatPrice(getEffectivePrice(item) * item.quantity)}`).join('%0A') +
+      `%0A%0A💰 Total: ${formatPrice(totalDisplay)}%0A` +
       `💳 Mode paiement: ${getPaymentMethod(formData.location)}%0A` +
       (formData.notes ? `%0A📝 Notes: ${formData.notes}` : '');
 
@@ -52,6 +70,7 @@ const OrderPopup: React.FC<OrderPopupProps> = ({ isOpen, onClose }) => {
       location: 'abidjan',
       country: '',
       city: '',
+      quartier: '',
       notes: '',
     });
   };
@@ -126,17 +145,20 @@ const OrderPopup: React.FC<OrderPopupProps> = ({ isOpen, onClose }) => {
                       {item.name} x{item.quantity}
                     </span>
                     <span className="font-medium">
-                      {formatPrice(item.price * item.quantity)}
+                      {formatPrice(getEffectivePrice(item) * item.quantity)}
                     </span>
                   </div>
                 ))}
                 <div className="border-t pt-2 mt-2">
                   <div className="flex justify-between font-bold text-lg">
                     <span>Total</span>
-                    <span className="text-primary-600">{formatPrice(getTotal())}</span>
+                    <span className="text-primary-600">{formatPrice(getTotalWithLocation())}</span>
                   </div>
                   <div className="text-sm text-gray-500 mt-2">
                     Mode de paiement: {getPaymentMethod(formData.location)}
+                    {formData.location === 'abidjan' && (
+                      <span className="block text-green-600 font-medium mt-1">📦 Livraison gratuite</span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -194,7 +216,8 @@ const OrderPopup: React.FC<OrderPopupProps> = ({ isOpen, onClose }) => {
                       ...formData, 
                       location: e.target.value as OrderFormData['location'],
                       city: '',
-                      country: ''
+                      country: '',
+                      quartier: ''
                     })}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   >
@@ -245,6 +268,26 @@ const OrderPopup: React.FC<OrderPopupProps> = ({ isOpen, onClose }) => {
                         value={formData.city}
                         onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                         className="w-full pl-10 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        placeholder={formData.location === 'abidjan' ? 'Ex: Cocody, Yopougon, Plateau...' : undefined}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {formData.location === 'abidjan' && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Quartier *
+                    </label>
+                    <div className="relative">
+                      <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+                      <input
+                        type="text"
+                        required
+                        value={formData.quartier || ''}
+                        onChange={(e) => setFormData({ ...formData, quartier: e.target.value })}
+                        className="w-full pl-10 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        placeholder="Ex: Angré, Riviera, Adjamé..."
                       />
                     </div>
                   </div>

@@ -32,6 +32,7 @@ export interface OrderFormData {
   location: 'abidjan' | 'interior' | 'exterior';
   country?: string;
   city?: string;
+  quartier?: string;
   notes?: string;
 }
 
