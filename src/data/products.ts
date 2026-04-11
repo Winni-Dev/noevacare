@@ -20,7 +20,7 @@ export const products: Product[] = [
     id: 2,
     name: 'Pommade Naturelle',
     description: 'Pommade 100% naturelle pour les douleurs musculaires et articulaires.',
-    price: 3500,
+    price: 5000,
     benefits: [
       'Soulagement des douleurs',
       'Anti-inflammatoire naturel',
