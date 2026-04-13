@@ -1,6 +1,6 @@
 import { Product } from '../types';
 import bracelet from '../IMAGES/bracelet_blanc.jpeg'
-import pomade from '../IMAGES/pommade.png'
+import pomade from '../IMAGES/pommade.webp'
 
 export const products: Product[] = [
   {
