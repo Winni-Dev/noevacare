@@ -17,10 +17,19 @@ export default defineConfig({
     // Code splitting strategy
     rollupOptions: {
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'framer-motion': ['framer-motion'],
-          'ui-vendor': ['lucide-react', 'react-hot-toast'],
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            if (id.includes('react')) {
+              return 'react-vendor';
+            }
+            if (id.includes('framer-motion')) {
+              return 'framer-motion';
+            }
+            if (id.includes('lucide') || id.includes('react-hot-toast')) {
+              return 'ui-vendor';
+            }
+            return 'vendor';
+          }
         },
       },
     },
@@ -30,5 +39,9 @@ export default defineConfig({
     reportCompressedSize: false,
     // Chunk size warning
     chunkSizeWarningLimit: 1000,
+    // Reduce output file size
+    sourcemap: false,
+    // Optimize assets
+    assetsInlineLimit: 4096, // Inline assets smaller than 4kb
   },
 })

@@ -282,10 +282,11 @@
 //                   {/* Vidéo au lieu d'image */}
 //                   <video
 //                     src={mainVideo}
-//                     autoPlay
+//                     autoPlay={false}
 //                     muted
 //                     loop
 //                     playsInline
+//                     preload="none"
 //                     className="object-cover w-full h-full"
 //                   />
 //                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
@@ -407,10 +408,11 @@
 //                     <div className="relative h-48 overflow-hidden">
 //                       <video
 //                         src={mainVideo}
-//                         autoPlay
+//                         autoPlay={false}
 //                         muted
 //                         loop
 //                         playsInline
+//                         preload="none"
 //                         className="object-cover w-full h-full"
 //                       />
 //                       <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
@@ -535,9 +537,10 @@
 //                   <video
 //                     src={video}
 //                     controls
-//                     autoPlay
+//                     autoPlay={false}
 //                     muted
 //                     playsInline
+//                     preload="none"
 //                     className="object-cover w-full h-full"
 //                   />
 //                 </div>
@@ -970,6 +973,7 @@ import {
   X
 } from 'lucide-react';
 import pommadeImage from '../IMAGES/pommade.webp';
+import LazyVideo from './LazyVideo';
 // On importe toujours les vidéos mais on ne les charge pas automatiquement
 import video from '../IMAGES/Prsentationdubracelet.mp4';
 import mainVideo from '../IMAGES/main.mp4';
@@ -1277,13 +1281,13 @@ const About: React.FC = () => {
                       <div className="absolute inset-0 transition-all bg-black/20 group-hover:bg-black/10" />
                     </>
                   ) : (
-                    <video
-                      ref={mainVideoRef}
+                    <LazyVideo
                       src={mainVideo}
-                      muted
-                      loop
-                      playsInline
-                      autoPlay
+                      muted={true}
+                      loop={true}
+                      playsInline={true}
+                      autoPlay={false}
+                      preload="none"
                       className="object-cover w-full h-full"
                     />
                   )}
@@ -1423,13 +1427,13 @@ const About: React.FC = () => {
                           <div className="absolute inset-0 transition-all bg-black/20 group-hover:bg-black/10" />
                         </>
                       ) : (
-                        <video
-                          ref={mainVideoRef}
+                        <LazyVideo
                           src={mainVideo}
-                          muted
-                          loop
-                          playsInline
-                          autoPlay
+                          muted={true}
+                          loop={true}
+                          playsInline={true}
+                          autoPlay={false}
+                          preload="none"
                           className="object-cover w-full h-full"
                         />
                       )}
